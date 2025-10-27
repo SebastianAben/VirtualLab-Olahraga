@@ -20,7 +20,7 @@ export function AuthButton({
       <div className="flex items-center gap-3">
         <button
           onClick={onViewProfile}
-          className="flex items-center gap-2 bg-white hover:bg-gray-50 text-gray-800 font-semibold py-2 px-4 rounded-lg shadow transition-all"
+          className="flex items-center gap-2 bg-white hover:bg-gray-50 dark:bg-slate-800 dark:hover:bg-slate-700 text-gray-800 dark:text-slate-100 font-semibold py-2 px-4 rounded-lg shadow transition-all"
         >
           <User className="w-4 h-4" />
           <span className="hidden sm:inline">{userEmail}</span>

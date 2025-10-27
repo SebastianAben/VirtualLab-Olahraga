@@ -1,13 +1,13 @@
 const INTENSITY_TARGETS = {
-  rest: { target: 80, min: 60, max: 95 },
-  jog: { target: 135, min: 115, max: 154 },
-  sprint: { target: 175, min: 155, max: 200 },
+  rest: { target: 80 },
+  jog: { target: 135 },
+  sprint: { target: 175 },
 };
 
-const EXERTION_STIFFNESS = 0.00000008;
-const EXERTION_DAMPING = 0.08;
-const RECOVERY_STIFFNESS = 0.00000004;
-const RECOVERY_DAMPING = 0.05;
+const MIN_HEART_RATE = 50;
+const MAX_HEART_RATE = 200;
+const EXERTION_RESPONSE_TIME = 1.8; // seconds to reach ~63% toward target
+const RECOVERY_RESPONSE_TIME = 3.2; // slower return when cooling down
 
 function getZoneFromHeartRate(hr) {
   if (hr < 95) return 'resting';
@@ -16,29 +16,25 @@ function getZoneFromHeartRate(hr) {
   return 'peak';
 }
 
-function updateSimulation(state, deltaTime) {
+function clamp(value, min, max) {
+  return Math.min(Math.max(value, min), max);
+}
+
+function updateSimulation(state, deltaTimeMs) {
+  const dt = Math.max(deltaTimeMs, 0) / 1000;
+  if (dt === 0) {
+    return state;
+  }
+
   const isExertion = state.targetHeartRate > state.currentHeartRate;
-  const stiffness = isExertion ? EXERTION_STIFFNESS : RECOVERY_STIFFNESS;
-  const damping = isExertion ? EXERTION_DAMPING : RECOVERY_DAMPING;
+  const responseTime = isExertion ? EXERTION_RESPONSE_TIME : RECOVERY_RESPONSE_TIME;
 
-  const force = (state.targetHeartRate - state.currentHeartRate) * stiffness;
+  const alpha = 1 - Math.exp(-dt / responseTime);
+  const interpolatedHeartRate =
+    state.currentHeartRate + (state.targetHeartRate - state.currentHeartRate) * alpha;
 
-  let newVelocity = (state.heartRateVelocity || 0) + force * deltaTime;
-
-  newVelocity *= (1 - damping);
-
-  let newHeartRate = state.currentHeartRate + newVelocity * deltaTime;
-
-  if (newHeartRate > state.maxHeartRate) {
-    newHeartRate = state.maxHeartRate;
-    newVelocity = 0;
-  }
-
-  if (newHeartRate < state.minHeartRate) {
-    newHeartRate = state.minHeartRate;
-    newVelocity = 0;
-  }
-
+  const newHeartRate = clamp(interpolatedHeartRate, MIN_HEART_RATE, MAX_HEART_RATE);
+  const newVelocity = (newHeartRate - state.currentHeartRate) / dt;
   const newZone = getZoneFromHeartRate(newHeartRate);
 
   return {
@@ -50,13 +46,12 @@ function updateSimulation(state, deltaTime) {
 }
 
 function setIntensity(state, intensity) {
-  const newTarget = INTENSITY_TARGETS[intensity];
+  const nextConfig = INTENSITY_TARGETS[intensity] || INTENSITY_TARGETS[state.intensity] || INTENSITY_TARGETS.rest;
+  const nextIntensity = INTENSITY_TARGETS[intensity] ? intensity : state.intensity;
   return {
     ...state,
-    intensity,
-    targetHeartRate: newTarget.target,
-    minHeartRate: newTarget.min,
-    maxHeartRate: newTarget.max,
+    intensity: nextIntensity,
+    targetHeartRate: nextConfig.target,
   };
 }
 

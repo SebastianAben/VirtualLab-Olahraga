@@ -14,26 +14,26 @@ const ZONE_INFO: Record<
 > = {
   resting: {
     label: 'Resting',
-    color: 'text-green-700',
-    bgColor: 'bg-green-100',
+    color: 'text-green-700 dark:text-green-300',
+    bgColor: 'bg-green-100 dark:bg-green-500/15',
     description: '60-94 BPM - Normal resting heart rate',
   },
   'fat-burn': {
     label: 'Fat Burn',
-    color: 'text-blue-700',
-    bgColor: 'bg-blue-100',
+    color: 'text-blue-700 dark:text-blue-300',
+    bgColor: 'bg-blue-100 dark:bg-blue-500/15',
     description: '95-114 BPM - Light exercise, optimal for fat burning',
   },
   cardio: {
     label: 'Cardio',
-    color: 'text-amber-700',
-    bgColor: 'bg-amber-100',
+    color: 'text-amber-700 dark:text-amber-300',
+    bgColor: 'bg-amber-100 dark:bg-amber-500/15',
     description: '115-154 BPM - Moderate to vigorous exercise',
   },
   peak: {
     label: 'Peak',
-    color: 'text-red-700',
-    bgColor: 'bg-red-100',
+    color: 'text-red-700 dark:text-red-300',
+    bgColor: 'bg-red-100 dark:bg-red-500/15',
     description: '155-200 BPM - Maximum effort exercise',
   },
 };
@@ -48,17 +48,17 @@ export function Dashboard({
 
   return (
     <div className="w-full space-y-4">
-      <div className="bg-white rounded-lg shadow-lg p-6">
+      <div className="bg-white dark:bg-slate-900 dark:border dark:border-slate-800 rounded-lg shadow-lg dark:shadow-slate-900/40 p-6 transition-colors">
         <div className="flex items-center justify-center mb-4">
           <Heart className="w-8 h-8 text-red-500 animate-pulse" />
-          <h2 className="text-2xl font-bold ml-2 text-gray-800">Heart Rate Monitor</h2>
+          <h2 className="text-2xl font-bold ml-2 text-gray-800 dark:text-slate-100">Heart Rate Monitor</h2>
         </div>
 
         <div className="text-center mb-6">
-          <div className="text-7xl font-bold text-gray-800 mb-2">
+          <div className="text-7xl font-bold text-gray-800 dark:text-slate-100 mb-2">
             {Math.round(currentHeartRate)}
           </div>
-          <div className="text-2xl text-gray-600">BPM</div>
+          <div className="text-2xl text-gray-600 dark:text-slate-400">BPM</div>
         </div>
 
         <div
@@ -72,8 +72,8 @@ export function Dashboard({
         </div>
       </div>
 
-      <div className="bg-white rounded-lg shadow-lg p-6">
-        <h3 className="text-xl font-bold text-gray-800 mb-4 text-center">
+      <div className="bg-white dark:bg-slate-900 dark:border dark:border-slate-800 rounded-lg shadow-lg dark:shadow-slate-900/40 p-6 transition-colors">
+        <h3 className="text-xl font-bold text-gray-800 dark:text-slate-100 mb-4 text-center">
           Exercise Controls
         </h3>
         <div className="grid grid-cols-3 gap-3">
@@ -82,7 +82,7 @@ export function Dashboard({
             className={`py-4 px-6 rounded-lg font-semibold transition-all transform hover:scale-105 ${
               intensity === 'rest'
                 ? 'bg-green-500 text-white shadow-lg scale-105'
-                : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                : 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700'
             }`}
           >
             <div className="text-lg">Rest</div>
@@ -93,7 +93,7 @@ export function Dashboard({
             className={`py-4 px-6 rounded-lg font-semibold transition-all transform hover:scale-105 ${
               intensity === 'jog'
                 ? 'bg-amber-500 text-white shadow-lg scale-105'
-                : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                : 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700'
             }`}
           >
             <div className="text-lg">Jog</div>
@@ -104,7 +104,7 @@ export function Dashboard({
             className={`py-4 px-6 rounded-lg font-semibold transition-all transform hover:scale-105 ${
               intensity === 'sprint'
                 ? 'bg-red-500 text-white shadow-lg scale-105'
-                : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                : 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700'
             }`}
           >
             <div className="text-lg">Sprint</div>
