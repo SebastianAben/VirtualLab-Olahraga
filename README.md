@@ -26,7 +26,7 @@ Repositori ini berisi Virtual Sports Lab bertema simulasi latihan kardiovaskular
 Pastikan Node.js (versi 18 ke atas) dan npm sudah terpasang. Kloning repositori ini lalu masuk ke folder proyek.
 
 ```bash
-git clone <url-repo-anda>
+git clone https://github.com/SebastianAben/VirtualLab-Olahraga.git
 cd VirtualLab-Olahraga
 ```
 
