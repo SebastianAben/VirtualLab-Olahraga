@@ -1,4 +1,4 @@
-import { ArrowLeft, Bookmark, BookOpen, ClipboardList } from 'lucide-react';
+import { ArrowLeft, Bookmark, BookOpen, ClipboardList, Flame, RotateCcw } from 'lucide-react';
 import type { LearningChapter } from './LearningCenter';
 
 interface LearningChapterDetailProps {
@@ -47,6 +47,20 @@ export function LearningChapterDetail({ chapter, onBack }: LearningChapterDetail
           ))}
         </ul>
       </section>
+
+      {chapter.detailedContent && chapter.detailedContent.length > 0 && (
+        <section className="bg-white dark:bg-slate-900 dark:border dark:border-slate-800 rounded-2xl shadow-lg dark:shadow-slate-900/40 p-6 space-y-4">
+          <div className="flex items-center gap-2 text-indigo-600 dark:text-indigo-300">
+            <BookOpen className="w-5 h-5" />
+            <h2 className="text-xl font-semibold">Penjelasan Materi</h2>
+          </div>
+          <div className="space-y-3 text-sm leading-relaxed text-gray-700 dark:text-slate-200">
+            {chapter.detailedContent.map((paragraph, index) => (
+              <p key={index}>{paragraph}</p>
+            ))}
+          </div>
+        </section>
+      )}
 
       {chapter.recommendedReading && chapter.recommendedReading.length > 0 && (
         <section className="bg-white dark:bg-slate-900 dark:border dark:border-slate-800 rounded-2xl shadow-lg dark:shadow-slate-900/40 p-6 space-y-4">
