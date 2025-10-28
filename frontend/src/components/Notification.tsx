@@ -8,6 +8,8 @@ interface NotificationProps {
 }
 
 export function Notification({ message, type, onClose }: NotificationProps) {
+  /*
+  // Pop-up notification
   useEffect(() => {
     const timer = setTimeout(() => {
       onClose();
@@ -35,6 +37,26 @@ export function Notification({ message, type, onClose }: NotificationProps) {
       </div>
       <button onClick={onClose} className="ml-4 p-1 rounded-full hover:bg-white/20 transition-colors">
         <X className="w-5 h-5" />
+      </button>
+    </div>
+  );
+  */
+
+  const isSuccess = type === 'success';
+  const Icon = isSuccess ? CheckCircle : XCircle;
+  const colorClass = isSuccess
+    ? 'border-green-500 text-green-600 dark:text-green-400'
+    : 'border-red-500 text-red-600 dark:text-red-400';
+
+  return (
+    <div className={`w-full max-w-sm mx-auto mb-4 flex items-start gap-3 rounded-lg border px-4 py-3 bg-white dark:bg-slate-900 shadow-sm ${colorClass}`}>
+      <Icon className="w-5 h-5 mt-0.5" />
+      <div className="flex-1">
+        <p className="text-sm font-semibold">{isSuccess ? 'Berhasil' : 'Terjadi Kesalahan'}</p>
+        <p className="text-sm leading-relaxed">{message}</p>
+      </div>
+      <button onClick={onClose} className="text-sm text-gray-500 hover:text-gray-700 dark:text-slate-400 dark:hover:text-slate-200">
+        Tutup
       </button>
     </div>
   );

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { X } from 'lucide-react';
+import { X, Eye, EyeOff } from 'lucide-react';
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -13,6 +13,19 @@ export function AuthModal({ isOpen, onClose, onSubmit }: AuthModalProps) {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [confirmTouched, setConfirmTouched] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  const toggleMode = () => {
+    setIsSignUp((prev) => !prev);
+    setError('');
+    setConfirmPassword('');
+    setConfirmTouched(false);
+    setShowPassword(false);
+    setShowConfirmPassword(false);
+  };
 
   if (!isOpen) return null;
 
@@ -21,10 +34,20 @@ export function AuthModal({ isOpen, onClose, onSubmit }: AuthModalProps) {
     setError('');
     setLoading(true);
 
+    if (isSignUp && password !== confirmPassword) {
+      setConfirmTouched(true);
+      setLoading(false);
+      return;
+    }
+
     try {
       await onSubmit(email, password, isSignUp);
       setEmail('');
       setPassword('');
+      setConfirmPassword('');
+      setConfirmTouched(false);
+      setShowPassword(false);
+      setShowConfirmPassword(false);
       onClose();
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Authentication failed');
@@ -40,12 +63,6 @@ export function AuthModal({ isOpen, onClose, onSubmit }: AuthModalProps) {
           <h2 className="text-2xl font-bold text-gray-800 dark:text-slate-100">
             {isSignUp ? 'Sign Up' : 'Login'}
           </h2>
-          <button
-            onClick={onClose}
-            className="text-gray-500 hover:text-gray-700 dark:text-slate-400 dark:hover:text-slate-200 transition-colors"
-          >
-            <X className="w-6 h-6" />
-          </button>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -63,20 +80,61 @@ export function AuthModal({ isOpen, onClose, onSubmit }: AuthModalProps) {
             />
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">
+          <div className="space-y-2">
+            <label className="block text-sm font-medium text-gray-700 dark:text-slate-300">
               Password
             </label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              minLength={6}
-              className="w-full px-4 py-2 border border-gray-300 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-slate-800 text-gray-800 dark:text-slate-100"
-              placeholder="••••••••"
-            />
+            <div className="relative">
+              <input
+                type={showPassword ? 'text' : 'password'}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                minLength={6}
+                className="w-full px-4 py-2 border border-gray-300 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-slate-800 text-gray-800 dark:text-slate-100 pr-12"
+                placeholder="••••••••"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword((prev) => !prev)}
+                className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500 hover:text-gray-700 dark:text-slate-400 dark:hover:text-slate-200"
+              >
+                {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+              </button>
+            </div>
           </div>
+
+          {isSignUp && (
+            <div className="space-y-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-slate-300">
+                Confirm Password
+              </label>
+              <div className="relative">
+                <input
+                  type={showConfirmPassword ? 'text' : 'password'}
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  onFocus={() => setConfirmTouched(true)}
+                  required
+                  minLength={6}
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-slate-800 text-gray-800 dark:text-slate-100 pr-12"
+                  placeholder="••••••••"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowConfirmPassword((prev) => !prev)}
+                  className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500 hover:text-gray-700 dark:text-slate-400 dark:hover:text-slate-200"
+                >
+                  {showConfirmPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                </button>
+              </div>
+              {confirmTouched && confirmPassword !== password && (
+                <div className="bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/40 text-red-700 dark:text-red-300 px-4 py-2 rounded-lg text-sm">
+                  Konfirmasi password harus sama dengan password.
+                </div>
+              )}
+            </div>
+          )}
 
           {error && (
             <div className="bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/40 text-red-700 dark:text-red-300 px-4 py-3 rounded-lg text-sm">
@@ -95,7 +153,7 @@ export function AuthModal({ isOpen, onClose, onSubmit }: AuthModalProps) {
           <div className="text-center">
             <button
               type="button"
-              onClick={() => setIsSignUp(!isSignUp)}
+              onClick={toggleMode}
               className="text-blue-500 hover:text-blue-600 dark:text-blue-300 dark:hover:text-blue-200 text-sm font-medium"
             >
               {isSignUp

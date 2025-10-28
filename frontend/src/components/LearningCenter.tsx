@@ -1,4 +1,4 @@
-import { BookOpen, Activity, Brain, HeartPulse, Target, RotateCcw, ArrowRight } from 'lucide-react';
+import { Dumbbell, Activity, Brain, HeartPulse, Target, RotateCcw, ArrowRight, BookOpen, Flame } from 'lucide-react';
 
 export interface LearningChapter {
   id: string;
@@ -7,15 +7,16 @@ export interface LearningChapter {
   icon: 'book' | 'activity' | 'brain' | 'heart' | 'target' | 'recovery';
   takeaways: string[];
   recommendedReading?: string[];
+  detailedContent?: string[];
 }
 
 const iconMap: Record<LearningChapter['icon'], JSX.Element> = {
-  book: <BookOpen className="w-8 h-8 text-indigo-500" />,
+  book: <Dumbbell className="w-8 h-8 text-indigo-500" />,
   activity: <Activity className="w-8 h-8 text-amber-500" />,
-  brain: <Brain className="w-8 h-8 text-emerald-500" />,
+  brain: <RotateCcw className="w-8 h-8 text-emerald-500" />,
   heart: <HeartPulse className="w-8 h-8 text-rose-500" />,
   target: <Target className="w-8 h-8 text-blue-500" />,
-  recovery: <RotateCcw className="w-8 h-8 text-purple-500" />,
+  recovery: <Flame className="w-8 h-8 text-purple-500" />,
 };
 
 interface LearningCenterProps {
