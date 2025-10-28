@@ -96,15 +96,13 @@ const SimulationResult = require('./models/SimulationResult');
 
   app.post('/api/simulation/start', (req, res) => {
     const simulationId = Date.now().toString();
-    const initialState = {
+  const initialState = {
       currentHeartRate: 70,
       targetHeartRate: 70,
       intensity: 'rest',
       zone: 'resting',
       history: [70],
       heartRateVelocity: 0,
-      minHeartRate: 60,
-      maxHeartRate: 95,
     };
     simulations[simulationId] = initialState;
     res.json({ simulationId, initialState });

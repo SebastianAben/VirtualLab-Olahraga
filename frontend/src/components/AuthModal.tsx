@@ -34,15 +34,15 @@ export function AuthModal({ isOpen, onClose, onSubmit }: AuthModalProps) {
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-lg shadow-xl max-w-md w-full p-6">
+    <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4">
+      <div className="bg-white dark:bg-slate-900 dark:border dark:border-slate-800 rounded-lg shadow-xl dark:shadow-slate-900/40 max-w-md w-full p-6 transition-colors">
         <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-bold text-gray-800">
+          <h2 className="text-2xl font-bold text-gray-800 dark:text-slate-100">
             {isSignUp ? 'Sign Up' : 'Login'}
           </h2>
           <button
             onClick={onClose}
-            className="text-gray-500 hover:text-gray-700 transition-colors"
+            className="text-gray-500 hover:text-gray-700 dark:text-slate-400 dark:hover:text-slate-200 transition-colors"
           >
             <X className="w-6 h-6" />
           </button>
@@ -50,7 +50,7 @@ export function AuthModal({ isOpen, onClose, onSubmit }: AuthModalProps) {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">
               Email
             </label>
             <input
@@ -58,13 +58,13 @@ export function AuthModal({ isOpen, onClose, onSubmit }: AuthModalProps) {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-300 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-slate-800 text-gray-800 dark:text-slate-100"
               placeholder="your@email.com"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">
               Password
             </label>
             <input
@@ -73,13 +73,13 @@ export function AuthModal({ isOpen, onClose, onSubmit }: AuthModalProps) {
               onChange={(e) => setPassword(e.target.value)}
               required
               minLength={6}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-300 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-slate-800 text-gray-800 dark:text-slate-100"
               placeholder="••••••••"
             />
           </div>
 
           {error && (
-            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
+            <div className="bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/40 text-red-700 dark:text-red-300 px-4 py-3 rounded-lg text-sm">
               {error}
             </div>
           )}
@@ -87,7 +87,7 @@ export function AuthModal({ isOpen, onClose, onSubmit }: AuthModalProps) {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-blue-500 hover:bg-blue-600 disabled:bg-gray-300 text-white font-semibold py-3 rounded-lg transition-all"
+            className="w-full bg-blue-500 hover:bg-blue-600 disabled:bg-gray-300 dark:disabled:bg-slate-700 text-white font-semibold py-3 rounded-lg transition-all"
           >
             {loading ? 'Processing...' : isSignUp ? 'Sign Up' : 'Login'}
           </button>
@@ -96,7 +96,7 @@ export function AuthModal({ isOpen, onClose, onSubmit }: AuthModalProps) {
             <button
               type="button"
               onClick={() => setIsSignUp(!isSignUp)}
-              className="text-blue-500 hover:text-blue-600 text-sm font-medium"
+              className="text-blue-500 hover:text-blue-600 dark:text-blue-300 dark:hover:text-blue-200 text-sm font-medium"
             >
               {isSignUp
                 ? 'Already have an account? Login'
