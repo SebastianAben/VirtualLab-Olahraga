@@ -87,5 +87,3 @@ Frontend dapat diakses melalui URL yang ditampilkan (biasanya `http://localhost:
 backend/   # kode server Express + simulasi
 frontend/  # aplikasi React + halaman Learning Center
 ```
-
-Semoga membantu Anda memahami dan menjalankan Virtual Sports Lab ini. Selamat bereksperimen!
